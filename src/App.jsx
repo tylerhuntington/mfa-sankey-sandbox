@@ -6,10 +6,12 @@ import SankeyNivo from './components/SankeyNivo';
 import SankeyRecharts from './components/SankeyRecharts';
 import SankeyGoogle from './components/SankeyGoogle';
 
+const HEADER_HEIGHT = 48;
+
 function App() {
   const [activeTab, setActiveTab] = useState('recharts');
   const chartWidth = 1200;
-  const chartHeight = 750;
+  const chartHeight = window.innerHeight - HEADER_HEIGHT - 16;
 
   const renderActiveComponent = () => {
     switch (activeTab) {
@@ -29,33 +31,20 @@ function App() {
   };
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h1>MFA Sankey Diagram Library Comparison</h1>
-      <p>
-        Comparison of different React-compatible Sankey diagram libraries using mock Material Flow Analysis data.
-      </p>
-
-      <div style={{ marginBottom: '20px', display: 'flex', gap: '10px' }}>
-        <button onClick={() => setActiveTab('d3')} style={btnStyle(activeTab === 'd3')}>D3.js</button>
-        <button onClick={() => setActiveTab('plotly')} style={btnStyle(activeTab === 'plotly')}>Plotly.js</button>
-        <button onClick={() => setActiveTab('nivo')} style={btnStyle(activeTab === 'nivo')}>Nivo</button>
-        <button onClick={() => setActiveTab('recharts')} style={btnStyle(activeTab === 'recharts')}>Recharts</button>
-        <button onClick={() => setActiveTab('google')} style={btnStyle(activeTab === 'google')}>Google Charts</button>
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', fontFamily: 'Arial, sans-serif', overflow: 'hidden' }}>
+      <div style={{ height: HEADER_HEIGHT, display: 'flex', alignItems: 'center', gap: '16px', padding: '0 16px', flexShrink: 0, borderBottom: '1px solid #e0e0e0' }}>
+        <span style={{ fontWeight: 'bold', fontSize: '14px', whiteSpace: 'nowrap', color: '#333' }}>MFA Sankey</span>
+        <div style={{ display: 'flex', gap: '6px' }}>
+          <button onClick={() => setActiveTab('d3')} style={btnStyle(activeTab === 'd3')}>D3.js</button>
+          <button onClick={() => setActiveTab('plotly')} style={btnStyle(activeTab === 'plotly')}>Plotly.js</button>
+          <button onClick={() => setActiveTab('nivo')} style={btnStyle(activeTab === 'nivo')}>Nivo</button>
+          <button onClick={() => setActiveTab('recharts')} style={btnStyle(activeTab === 'recharts')}>Recharts</button>
+          <button onClick={() => setActiveTab('google')} style={btnStyle(activeTab === 'google')}>Google Charts</button>
+        </div>
       </div>
 
-      <div style={{ background: '#f9f9f9', padding: '20px', borderRadius: '8px' }}>
+      <div style={{ flex: 1, minHeight: 0, background: '#f9f9f9', overflow: 'hidden' }}>
         {renderActiveComponent()}
-      </div>
-
-      <div style={{ marginTop: '20px' }}>
-        <h3>Observations & Considerations:</h3>
-        <ul>
-          <li><strong>D3.js:</strong> Standard, high control, but requires more code to set up interactions and responsiveness.</li>
-          <li><strong>Plotly.js:</strong> Great interactivity out of the box (tooltips, drag nodes), but large bundle size.</li>
-          <li><strong>Nivo:</strong> React-centric, nice default aesthetics, built on D3. Good balance.</li>
-          <li><strong>Recharts:</strong> Native React, but Sankey support can be basic.</li>
-          <li><strong>Google Charts:</strong> Easy to use, but relies on external scripts and limited customization.</li>
-        </ul>
       </div>
     </div>
   );
