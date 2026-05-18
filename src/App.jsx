@@ -7,12 +7,18 @@ import SankeyRecharts from './components/SankeyRecharts';
 import SankeyGoogle from './components/SankeyGoogle';
 
 const HEADER_HEIGHT = 48;
-const CHART_MARGIN = 20;
+const CHART_TOP_MARGIN = 20;
+const CHART_BOTTOM_MARGIN = 80;
+// h3 title + phase labels + card padding inside each component add ~120px
+const COMPONENT_OVERHEAD = 120;
 
 function App() {
   const [activeTab, setActiveTab] = useState('recharts');
   const chartWidth = 1200;
-  const chartHeight = window.innerHeight - HEADER_HEIGHT - CHART_MARGIN * 2 - 8;
+  const chartHeight = Math.max(
+    300,
+    window.innerHeight - HEADER_HEIGHT - CHART_TOP_MARGIN - CHART_BOTTOM_MARGIN - COMPONENT_OVERHEAD
+  );
 
   const renderActiveComponent = () => {
     switch (activeTab) {
@@ -32,9 +38,9 @@ function App() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', fontFamily: 'Arial, sans-serif', backgroundColor: '#fff', color: '#213547' }}>
-      <div style={{ height: HEADER_HEIGHT, display: 'flex', alignItems: 'center', gap: '16px', padding: '0 16px', flexShrink: 0, borderBottom: '1px solid #e0e0e0', backgroundColor: '#fff' }}>
-        <span style={{ fontWeight: 'bold', fontSize: '14px', whiteSpace: 'nowrap', color: '#333' }}>MFA Sankey</span>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', fontFamily: 'Arial, sans-serif', backgroundColor: '#1a1a1a', color: '#e0e0e0' }}>
+      <div style={{ height: HEADER_HEIGHT, display: 'flex', alignItems: 'center', gap: '16px', padding: '0 16px', flexShrink: 0, borderBottom: '1px solid #333', backgroundColor: '#1a1a1a' }}>
+        <span style={{ fontWeight: 'bold', fontSize: '14px', whiteSpace: 'nowrap', color: '#e0e0e0' }}>MFA Sankey</span>
         <div style={{ display: 'flex', gap: '6px' }}>
           <button onClick={() => setActiveTab('d3')} style={btnStyle(activeTab === 'd3')}>D3.js</button>
           <button onClick={() => setActiveTab('plotly')} style={btnStyle(activeTab === 'plotly')}>Plotly.js</button>
@@ -44,18 +50,18 @@ function App() {
         </div>
       </div>
 
-      <div style={{ margin: CHART_MARGIN, background: '#f9f9f9', borderRadius: '8px', overflow: 'hidden' }}>
+      <div style={{ margin: `${CHART_TOP_MARGIN}px 20px ${CHART_BOTTOM_MARGIN}px`, background: '#f9f9f9', borderRadius: '8px', overflow: 'hidden' }}>
         {renderActiveComponent()}
       </div>
 
-      <div style={{ padding: '0 20px 32px' }}>
-        <h3 style={{ color: '#213547', marginBottom: '8px' }}>Notes</h3>
-        <ul style={{ color: '#213547', lineHeight: '1.7' }}>
-          <li><strong>D3.js:</strong> Standard, high control, but requires more code to set up interactions and responsiveness.</li>
-          <li><strong>Plotly.js:</strong> Great interactivity out of the box (tooltips, drag nodes), but large bundle size.</li>
-          <li><strong>Nivo:</strong> React-centric, nice default aesthetics, built on D3. Good balance.</li>
-          <li><strong>Recharts:</strong> Native React, but Sankey support can be basic.</li>
-          <li><strong>Google Charts:</strong> Easy to use, but relies on external scripts and limited customization.</li>
+      <div style={{ padding: '0 20px 40px' }}>
+        <h3 style={{ color: '#e0e0e0', marginBottom: '8px' }}>Notes</h3>
+        <ul style={{ color: '#ccc', lineHeight: '1.7' }}>
+          <li><strong style={{ color: '#e0e0e0' }}>D3.js:</strong> Standard, high control, but requires more code to set up interactions and responsiveness.</li>
+          <li><strong style={{ color: '#e0e0e0' }}>Plotly.js:</strong> Great interactivity out of the box (tooltips, drag nodes), but large bundle size.</li>
+          <li><strong style={{ color: '#e0e0e0' }}>Nivo:</strong> React-centric, nice default aesthetics, built on D3. Good balance.</li>
+          <li><strong style={{ color: '#e0e0e0' }}>Recharts:</strong> Native React, but Sankey support can be basic.</li>
+          <li><strong style={{ color: '#e0e0e0' }}>Google Charts:</strong> Easy to use, but relies on external scripts and limited customization.</li>
         </ul>
       </div>
     </div>
@@ -63,13 +69,14 @@ function App() {
 }
 
 const btnStyle = (isActive) => ({
-  padding: '10px 15px',
+  padding: '7px 14px',
   cursor: 'pointer',
-  background: isActive ? '#007bff' : '#eee',
-  color: isActive ? '#fff' : '#333',
-  border: 'none',
+  background: isActive ? '#007bff' : '#2a2a2a',
+  color: '#fff',
+  border: `1px solid ${isActive ? '#007bff' : '#444'}`,
   borderRadius: '4px',
-  fontWeight: 'bold'
+  fontWeight: 'bold',
+  fontSize: '13px',
 });
 
 export default App;
